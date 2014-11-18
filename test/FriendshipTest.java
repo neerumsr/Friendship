@@ -98,5 +98,6 @@ public class FriendshipTest {
 		ArrayList<String> indirectFriends = admin.getIndirectFriends("David");
 		assertTrue(indirectFriends.contains("Aaron"));
 		assertTrue(indirectFriends.contains("Cindy"));	
+		assertTrue(indirectFriends.contains("Frank"));
 	}
 }
