@@ -85,19 +85,46 @@ public class FriendshipTest {
 	}
 	
 	/**
-	 * Test get indirect friends
+	 * Test get indirect friends in a network
 	 */
 	@Test
-	public void testGetInDirectFriends() {
+	public void testGetIndirectFriends() {
 		FriendsAdmin admin = new FriendsAdmin();
 		admin.makeFriend("Aaron", "Bella");
 		admin.makeFriend("Bella", "Cindy");
 		admin.makeFriend("Bella", "David");
 		admin.makeFriend("David", "Elizabeth");
 		admin.makeFriend("Cindy", "Frank");
+		
 		ArrayList<String> indirectFriends = admin.getIndirectFriends("David");
+
 		assertTrue(indirectFriends.contains("Aaron"));
 		assertTrue(indirectFriends.contains("Cindy"));	
 		assertTrue(indirectFriends.contains("Frank"));
+		assertFalse(indirectFriends.contains("Bella"));
+		assertFalse(indirectFriends.contains("David"));
+		assertFalse(indirectFriends.contains("Elizabeth"));
+	}
+	
+	/**
+	 * Test get indirect friends along a single chain
+	 */
+	@Test
+	public void testGetIndirectFriendsChain() {
+		FriendsAdmin admin = new FriendsAdmin();
+		admin.makeFriend("Aaron", "Bella");
+		admin.makeFriend("Bella", "Cindy");
+		admin.makeFriend("Cindy", "David");
+		admin.makeFriend("David", "Elizabeth");
+		admin.makeFriend("Elizabeth", "Frank");
+		
+		ArrayList<String> indirectFriends = admin.getIndirectFriends("Aaron");
+		
+		assertTrue(indirectFriends.contains("David"));
+		assertTrue(indirectFriends.contains("Cindy"));	
+		assertTrue(indirectFriends.contains("Frank"));
+		assertTrue(indirectFriends.contains("Elizabeth"));
+		assertFalse(indirectFriends.contains("Bella"));
+		assertFalse(indirectFriends.contains("Aaron"));
 	}
 }

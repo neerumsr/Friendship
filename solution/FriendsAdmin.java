@@ -1,8 +1,6 @@
 package solution;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class FriendsAdmin {
 	public ArrayList<People> peopleList;
@@ -53,15 +51,6 @@ public class FriendsAdmin {
 
 	public ArrayList<String> getIndirectFriends(String name) {
 		People p = this.findByName(name);
-		Set<String> friendsSet = new HashSet<String>();
-		for(People people : peopleList){
-			for(People friend : people.friends){
-				friendsSet.add(friend.name);
-			}
-		}
-		friendsSet.removeAll(p.getDirectFriends());
-		if(friendsSet.contains(name)) friendsSet.remove(name);
-		ArrayList<String> indirfriends = new ArrayList<String>(friendsSet);
-		return indirfriends;
+		return p.getIndirectFriends();
 	}
 }

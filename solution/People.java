@@ -1,6 +1,8 @@
 package solution;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class People {
 	public String name;
@@ -36,5 +38,47 @@ public class People {
 			directFriends.add(p.name);
 		}
 		return directFriends;
+	}
+
+	public ArrayList<String> getIndirectFriends() {
+		// If this people don't have direct friends, then we say he doesn't have indirect neither.
+		if (null == friends || friends.isEmpty()) {
+			return null;
+		}
+		// Use a set to save all his direct friend's friends, then remove direct friends
+		Set<People> friendsSet = new HashSet<People>();
+		
+		dfs(friendsSet, friends);
+	
+		// Make sure friendSet don't contain direct friends
+		for(People p : friends){
+			if(friendsSet.contains(p)){
+				friendsSet.remove(p);
+			}
+		}
+		if(friendsSet.contains(this))
+			friendsSet.remove(this);
+		
+		// Check whether friendSet is empty
+		if(null == friendsSet || friendsSet.isEmpty()){
+			return null;
+		}
+		
+		// return indirect friend's name
+		ArrayList<String> indirectFriends = new ArrayList<String>();
+		for (People p : friendsSet) {
+			indirectFriends.add(p.name);
+		}
+		return indirectFriends;
+	}
+	
+	public void dfs(Set<People> friendsSet, ArrayList<People> friends){
+		if(null == friends || friends.isEmpty()) return;
+		for(People dirFriend : friends){
+			if(!friendsSet.contains(dirFriend)){
+				friendsSet.add(dirFriend);
+				dfs(friendsSet, dirFriend.friends);
+			}
+		}
 	}
 }
